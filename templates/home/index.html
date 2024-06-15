@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Home page{% endblock title %}
+{% block homeactive %}active{% endblock homeactive %}
+{% block body %}
+<div class="container">
+  <div class="row py-lg-5">
+      <div class="col-lg-6 col-md-8 mx-auto">
+          <h1 class="fw-light">Welcome to CodeWorld!</h1>
+          <p class="lead text-body-secondary">Stay ahead of the curve with our cutting-edge blog, delivering the latest in technology trends and insights. Dive into a world of innovation and stay up to date with the rapidly evolving landscape of technology.</p>
+          <p>
+              <a href="/blog/" class="btn btn-primary my-2">Go to blogs</a>
+          </p>
+      </div>
+  </div>
+  <hr>
+  <h3>Trending Blogs</h3>
+  <div class="album py-5 bg-body-tertiary">
+      <div class="container">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+              {% for post in allPosts|slice:":3" %}
+              <div class="col">
+                  <div class="card shadow-sm">
+                      <img src="/media/{{post.image}}" width="100%" height="225"><rect width="100%" height="100%" fill="#55595c">
+                      <div class="card-body">
+                          <p class="card-text">{{ post.title }}</p>
+                          <div class="d-flex justify-content-between align-items-center">
+                              <div class="btn-group">
+                                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                              </div>
+                              <small class="text-body-secondary">9 mins</small>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              {% endfor %}
+          </div>
+      </div>
+  </div>
+</div>
+
+{% endblock body %}

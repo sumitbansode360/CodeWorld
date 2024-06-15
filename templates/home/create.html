@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+    {% block title %} Upload Content{% endblock title %}
+    {% block css %}{% endblock css %}
+    
+    {% block body %}
+    {% load static %}
+    {{ form.media }}  <!-- Load CKEditor JavaScript -->
+    <h1>Upload Blog</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-success" type="submit">Submit</button>
+    </form>
+
+    {% endblock body %}

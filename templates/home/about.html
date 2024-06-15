@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}About page{% endblock title %}
+{% block aboutactive %}active{% endblock aboutactive%}
+{% block body %}
+<div class="px-4 py-5 my-5 text-center">
+    <h1 class="display-5 fw-bold text-body-emphasis">CodeWorld</h1>
+    <div class="col-lg-6 mx-auto">
+      <p class="lead mb-4">Welcome to CodeWorld, your ultimate destination for the latest trends and insights in the ever-evolving world of technology. Our blog is dedicated to keeping you informed, inspired, and ahead of the curve in today's fast-paced tech landscape.
+    </p>
+    <p class="lead mb-4">
+        Our Mission
+        At CodeWorld, our mission is to empower tech enthusiasts, professionals, and curious minds with the knowledge they need to navigate and thrive in the digital age. We believe that staying informed about technological advancements is crucial for personal growth, professional development, and innovation.
+    </p>
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <a href="/"><button type="button" class="btn btn-primary btn-lg px-4 gap-3">Back to Home</button></a>
+        <a href="/contact/"><button type="button" class="btn btn-outline-secondary btn-lg px-4">Go to contact</button></a>
+      </div>
+    </div>
+  </div>
+{% endblock body %}

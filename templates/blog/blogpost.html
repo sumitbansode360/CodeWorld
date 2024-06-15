@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% block title %}{{ blog.title }}{% endblock title %}
+{% block css %}
+.media {
+display: flex;
+align-items: flex-start;
+}
+
+.media img {
+margin-right: 1rem; /* Ensure there is enough space between the image and the text */
+}
+
+.media-body {
+display: flex;
+flex-direction: column;
+}
+.views{
+    float: right;
+}
+.button{
+
+    float: center;
+
+}
+{% endblock css %}
+{% block body %}
+{% load static %}
+{% load humanize %}
+{% load extras %}
+<div class="container">
+    <main role="main" class="container">
+        <div class="row">
+            <div class="col-md-8 blog-main">
+                <h3 class="pb-4 mb-4 font-italic border-bottom">
+                    {{ blog.title }}    
+                </h3>
+                <div class="views">
+                    <span>{{blog.views_count}} Views</span><br>  
+                </div>
+                <p class="blog-post-meta">{{ blog.timeStamp }} by {{ blog.author }}</p>
+                <div class="blog-post">
+                    <h3 class="blog-post-title">{{ blog.headings }}</h3>
+                    <hr>
+                    <br>
+                    <!--<img src="/media/{{ blog.image }}" alt="{{ blog.title }}" height="450px" width="600px" class="img-fluid">-->
+                    <br><br>
+                    <p>{{ blog.content|safe }}</p>
+                </div>
+                <hr>
+                <h3 class="mb-4">Comments({{ comments.count }})</h3>
+                <!-- Comment Form -->
+                {% if user.is_authenticated %}
+                <div class="card my-4">
+                    <h5 class="card-header">Leave a Comment:</h5>
+                    <div class="card-body">
+                        <form action="/blog/postComment/" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <textarea class="form-control" name="comment" rows="3"
+                                    placeholder="Enter your comment here..."></textarea>
+                            </div>
+                            <input type="hidden" name="postSno" value="{{ blog.id }}">
+                            <button type="submit" class="btn btn-primary mt-2">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                <!-- Display Comments -->
+                {% for comment in comments %}
+                <div class="media mb-4">
+                    <img class="d-flex align-self-start rounded-circle mr-3" src="{% static 'img/user.jpg' %}"
+                        alt="{{ comment.user.username }}" width="50">
+                    <div class="media-body">
+                        <h5 class="mt-0">{{ comment.user.username }}</h5>
+                        <p>{{ comment.comment }}</p>
+                        <small class="text-muted">Posted {{ comment.timestamp|naturaltime }}</small>
+                        <p class="d-inline-flex gap-1">
+                            <a class="btn btn-primary" data-bs-toggle="collapse" href="#replyBox{{ comment.sno }}"
+                                role="button" aria-expanded="false" aria-controls="replyBox{{ comment.sno }}">
+                                Reply
+                            </a>
+                        </p>
+                        <div class="collapse" id="replyBox{{ comment.sno }}">
+                            <div class="card card-body my-2">
+                                <form action="/blog/postComment/" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="comment">Post a reply</label>
+                                        <input type="text" class="form-control" name="comment"
+                                            placeholder="Enter comment here">
+                                        <input type="hidden" name="parentSno" value="{{ comment.sno }}">
+                                    </div>
+                                    <input type="hidden" name="postSno" value="{{ blog.id }}">
+                                    <button type="submit" class="btn btn-primary mt-2">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Replies Section -->
+                        
+                        <div class="replies my-2 ml-4">
+                            {% for reply in replyDict|get_val:comment.sno %}
+                            
+                            <div class="media mb-4">
+                                <img class="d-flex align-self-start rounded-circle mr-3"
+                                    src="{% static 'img/user.jpg' %}" alt="{{ reply.user.username }}" width="40">
+                                <div class="media-body">
+                                    <h5 class="mt-0">{{ reply.user.username }}</h5>
+                                    <p>{{ reply.comment }}</p>
+                                    <small class="text-muted">Posted {{ reply.timestamp|naturaltime }}</small>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                {% else %}
+                <p><b>Please login to post a comment</b></p>
+                {% for comment in comments %}
+                <div class="media mb-4">
+                    <img class="d-flex mr-3 rounded-circle" src="{% static 'img/user.jpg' %}"
+                        alt="{{ comment.user.username }}" width="50">
+                    <div class="media-body">
+                        <h5 class="mt-0">{{ comment.user.username }}</h5>
+                        <p>{{ comment.comment }}</p>
+                        <small class="text-muted">Posted {{ comment.timestamp|naturaltime }}</small>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No comments yet. Be the first to comment!</p>
+                {% endfor %}
+                {% endif %}
+            </div><!-- /.blog-main -->
+            <aside class="col-md-4 blog-sidebar">
+                <div class="p-4 mb-3 bg-light rounded">
+                    <h4 class="font-italic">About</h4>
+                    <p class="mb-0">Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur
+                        purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+                </div>
+                <div class="p-4">
+                    <h4 class="font-italic">Elsewhere</h4>
+                    <ol class="list-unstyled">
+                        <li><a href="https://github.com/">GitHub</a></li>
+                        <li><a href="https://www.instagram.com/">Instagram</a></li>
+                        <li><a href="https://www.facebook.com/">Facebook</a></li>
+                        <div class="fb-like" data-href="http://127.0.0.1:8000/blog/{{ blog.slug }}"
+                            data-layout="standard" data-action="like" data-size="large" data-show-faces="false"
+                            data-share="true"></div><br>
+                    </ol>
+                </div>
+            </aside><!-- /.blog-sidebar -->
+        </div><!-- /.row -->
+        <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator"
+            data-width="" data-numposts="5"></div>
+    </main>
+</div>
+{% endblock body %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Search Results{% endblock title %}
+{% block body %}
+<div class="container">
+    {% if nodata %}
+    <strong><p class="text-center mt-5">no Search results found</p><strong>
+    {% endif %}
+    <div class="album py-5 bg-body-tertiary">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                {% for post in results %}
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <img src="/media/{{post.image}}"  width="100%" height="225" focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#55595c"></rect>
+                        <div class="card-body">
+                            <p class="card-text">{{ post.title|truncatechars:100 }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a href="/blog/{{ post.slug }}" class="btn btn-sm btn-outline-secondary">View</a>
+                                </div>
+                                <small class="text-body-secondary">{{ post.author }}</small>
+                                <small class="text-body-secondary">{{ post.timeStamp }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if forloop.counter|divisibleby:3 and not forloop.last %}
+            </div>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}
