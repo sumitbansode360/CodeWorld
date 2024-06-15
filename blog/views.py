@@ -27,6 +27,7 @@ def blogpost(request,slug):
     return render(request,'blog/blogpost.html',context)
 
 def search(request):
+    context = {}
     blog = Blog.objects.all()
     if request.GET.get('search'):
         search = request.GET.get('search')
@@ -37,17 +38,13 @@ def search(request):
             Q(timeStamp__icontains=search)|
             Q(content__icontains=search)
         )
-        if len(search_blog) == 0:
+        if len(search_blog) ==0:
             search_not_found = True
             context = {'nodata':search_not_found}
             return render(request,'blog/search.html',context)
         context = {'results':search_blog}
     return render(request,'blog/search.html',context)
 
-# def like(request,slug):
-#     blog = get_object_or_404(Blog, slug=slug) 
-#     blog.like = blog.like + 1
-#     blog.save()
 
 def postComment(request):
     if request.method == 'POST':
