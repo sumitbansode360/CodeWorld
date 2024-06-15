@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from blog.models import Blog
-from .forms import BlogForm
+
 
 # Create your views here.
 def home(request):
@@ -87,14 +87,3 @@ def logOuthandle(request):
     logout(request)
     messages.success(request,'Log out successfully!')
     return redirect('/')
-
-def create(request):
-
-    if request.method == 'POST':
-        form = BlogForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('/')  # Redirect after POST to prevent resubmission
-    else:
-        form = BlogForm()
-    return render(request, 'home/create.html', {'form': form})

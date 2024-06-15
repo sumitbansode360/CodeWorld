@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path
 from . import views
 
 urlpatterns = [
@@ -9,5 +9,5 @@ urlpatterns = [
     path('logout/',views.logOuthandle,name="logOuthandle"), # name and views."name" must be same 
     path('contact/', views.contact, name='contact'),
     path('about/', views.about, name='about'),
-    path('create/', views.create, name='create'),
+
 ]

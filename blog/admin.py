@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib import admin
 from ckeditor.widgets import CKEditorWidget
-from .models import Blog,BlogComment,UserBlog
+from .models import Blog,BlogComment
 
 class BlogAdminForm(forms.ModelForm):
     content = forms.CharField(widget=CKEditorWidget())  # Correctly set CKEditorWidget for content
@@ -16,4 +16,3 @@ class BlogAdmin(admin.ModelAdmin):
 
 admin.site.register(Blog, BlogAdmin)
 admin.site.register(BlogComment)
-admin.site.register(UserBlog)

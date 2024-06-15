@@ -35,7 +35,7 @@ def search(request):
             Q(author__icontains=search)|
             Q(headings__icontains=search)|
             Q(timeStamp__icontains=search)|
-            Q(contents__icontains=search)
+            Q(content__icontains=search)
         )
         if len(search_blog) == 0:
             search_not_found = True
