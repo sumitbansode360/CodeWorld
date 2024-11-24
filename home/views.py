@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from blog.models import Blog
+from django.views.decorators.csrf import csrf_exempt
+
 
 
 # Create your views here.
@@ -13,6 +15,7 @@ def home(request):
     context = {'allPosts':blogs}
     return render(request,'home/index.html',context)
 
+@csrf_exempt
 def contact(request):
     if request.method=="POST":
         name = request.POST.get('name')
@@ -31,7 +34,7 @@ def contact(request):
 def about(request):
     return render(request,'home/about.html')
 
-                            
+@csrf_exempt                        
 def signUphandle(request):
     if request.method=='POST':
         username = request.POST.get('username')
@@ -65,7 +68,8 @@ def signUphandle(request):
         return redirect('/')
     else:
         return HttpResponse('404 not found')
-
+    
+@csrf_exempt
 def logInhandle(request):
     if request.method == 'POST':
         loginusername = request.POST['loginusername']
